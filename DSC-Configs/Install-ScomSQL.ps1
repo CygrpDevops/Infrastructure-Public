@@ -140,6 +140,8 @@
 			Features = $Features 
 			UpdateEnabled =  $UpdateEnabled 
         }
+
+        #adding sql server feature firewall rules.
         xSqlServerFirewall SqlFirewallRules
         {
                         DependsOn = '[xSQLServerSetup]SQLServerSetup'

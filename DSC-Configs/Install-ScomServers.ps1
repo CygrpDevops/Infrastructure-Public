@@ -172,6 +172,35 @@
                 DwDatabaseName = $SystemCenter2016OperationsManagerDatawarehouseInstance
             }
 
+
+            # Install Report Viewer 2012 on Web Console Servers and Consoles
+
+            $SQLServer2012SystemCLRTypes = "\Prerequisites\SQL2016CLR\SQLSysClrTypes.msi"
+
+            $ReportViewer2012Redistributable = "\Prerequisites\RV2016\ReportViewer.msi"
+
+            Package "SQLServer2012SystemCLRTypes"
+            {
+                Ensure = "Present"
+                Name = "Microsoft System CLR Types for SQL Server 2016 (x64)"
+                ProductId = ""
+                Path = (Join-Path -Path $PackagePath -ChildPath $SQLServer2012SystemCLRTypes)
+                Arguments = "ALLUSERS=2"
+                Credential = $InstallerServiceAccount
+            }
+
+
+            Package "ReportViewer2012Redistributable"
+            {
+                DependsOn = "[Package]SQLServer2012SystemCLRTypes"
+                Ensure = "Present"
+                Name = "Microsoft Report Viewer 2012 Runtime"
+                ProductID = ""
+                Path = (Join-Path -Path $Node.SourcePath -ChildPath $ReportViewer2012Redistributable)
+                Arguments = "ALLUSERS=2"
+                Credential = $InstallerServiceAccount
+            }
+
              # Install Reporting Server
             xSCOMReportingServerSetup "OMRS"
             {
@@ -208,6 +237,18 @@
                 SourcePath = $PackagePath
                 SetupCredential = $InstallerServiceAccount
                 ManagementServer = $MachineName
+            }
+
+            # Install Consoles
+            xSCOMConsoleSetup "OMC"
+            {
+                DependsOn = @(
+                    "[Package]SQLServer2012SystemCLRTypes",
+                    "[Package]ReportViewer2012Redistributable"
+                )
+                Ensure = "Present"
+                SourcePath = $PackagePath
+                SetupCredential = $InstallerServiceAccount
             }
 
   
