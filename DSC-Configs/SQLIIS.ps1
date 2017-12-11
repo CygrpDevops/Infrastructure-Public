@@ -54,7 +54,24 @@ Configuration SQLIIS
 		
 		[Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [String]$SQLSysAdminAccounts
+        [String]$SQLSysAdminAccounts,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$WebSiteNamePrefix,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$DevDomainName,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$QADomainName,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$UATDomainName
+
 		
 
     )
@@ -123,14 +140,14 @@ Configuration SQLIIS
           xWebsite DevWebsite
          {
             Ensure          = 'Present'
-            Name            = 'pvoice-dev'
+            Name            = $WebSiteNamePrefix + '-dev'
             State           = 'Started'
             PhysicalPath    = 'C:\inetpub\wwwroot\dev'
             BindingInfo     = @( MSFT_xWebBindingInformation
                                  {
                                    Protocol              = "HTTP"
                                    Port                  = 80
-                                   HostName = 'pv-dev.cygrp.com'
+                                   HostName = $DevDomainName
                                  }
                                  
                                 )
@@ -140,14 +157,14 @@ Configuration SQLIIS
          xWebsite UatWebsite
          {
             Ensure          = 'Present'
-            Name            = 'pvoice-uat'
+            Name            = $WebSiteNamePrefix +'-uat'
             State           = 'Started'
             PhysicalPath    = 'C:\inetpub\wwwroot\uat'
             BindingInfo     = @( MSFT_xWebBindingInformation
                                  {
                                    Protocol              = "HTTP"
                                    Port                  = 80
-                                   HostName = 'pv-uat.cygrp.com'
+                                   HostName = $QADomainName
                                  }
                                  
                                 )
@@ -157,14 +174,14 @@ Configuration SQLIIS
          xWebsite qaWebsite
          {
             Ensure          = 'Present'
-            Name            = 'pvoice-qa'
+            Name            = $WebSiteNamePrefix + '-qa'
             State           = 'Started'
             PhysicalPath    = 'C:\inetpub\wwwroot\qa'
             BindingInfo     = @( MSFT_xWebBindingInformation
                                  {
                                    Protocol              = "HTTP"
                                    Port                  = 80
-                                   HostName = 'pv-qa.cygrp.com'
+                                   HostName = $UATDomainName
                                  }
                                  
                                 )
