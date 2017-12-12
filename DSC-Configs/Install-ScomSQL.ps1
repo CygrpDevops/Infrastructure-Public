@@ -197,7 +197,7 @@
         {
                         DependsOn = '[xSQLServerSetup]SQLServerSetup'
                         Ensure               = 'Present'
-                        Features             = 'SQLENGINE,AS,RS,IS'
+                        Features             = 'SQLENGINE'
                         InstanceName         = $SQLInstanceName
                         SourcePath           = $PackagePath
                         PsDscRunAsCredential = $AdminCreds

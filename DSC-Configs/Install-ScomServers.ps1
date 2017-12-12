@@ -184,7 +184,7 @@
 
             
 
-            Package "SQLServer2012SystemCLRTypes"
+            Package "SQLServer2016SystemCLRTypes"
             {
                 Ensure = "Present"
                 Name = "Microsoft System CLR Types for SQL Server 2016 (x64)"
@@ -195,11 +195,11 @@
             }
 
 
-            Package "ReportViewer2012Redistributable"
+            Package "ReportViewer2016Redistributable"
             {
-                DependsOn = "[Package]SQLServer2012SystemCLRTypes"
+                DependsOn = "[Package]SQLServer2016SystemCLRTypes"
                 Ensure = "Present"
-                Name = "Microsoft Report Viewer 2012 Runtime"
+                Name = "Microsoft Report Viewer 2016 Runtime"
                 ProductID = ""
                 Path = $ReportViewer2012RedistributablePath
                 Arguments = "ALLUSERS=2"
