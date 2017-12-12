@@ -196,10 +196,11 @@
         xSqlServerFirewall SqlFirewallRules
         {
                         DependsOn = '[xSQLServerSetup]SQLServerSetup'
-                        Ensure = "Present"
-                        SourcePath = $PackagePath
-                        InstanceName = $SQLInstanceName
-                        Features = $Features
+                        Ensure               = 'Present'
+                        Features             = 'SQLENGINE,AS,RS,IS'
+                        InstanceName         = $SQLInstanceName
+                        SourcePath           = $PackagePath
+                        PsDscRunAsCredential = $AdminCreds
         }                       
    
 		LocalConfigurationManager 
