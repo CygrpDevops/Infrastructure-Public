@@ -37,8 +37,15 @@
 
         [Parameter(Mandatory)]
         [string]$ManagementGroupName,
-                [Parameter(Mandatory)]
-        [string]$PackagePath
+        
+        [Parameter(Mandatory)]
+        [string]$PackagePath,
+
+        [Parameter(Mandatory)]
+        [string]$SQLServer2012SystemCLRTypesPath,
+
+        [Parameter(Mandatory)]
+        [string]$ReportViewer2012RedistributablePath
  
        )
 
@@ -175,16 +182,14 @@
 
             # Install Report Viewer 2012 on Web Console Servers and Consoles
 
-            $SQLServer2012SystemCLRTypes = "\Prerequisites\SQL2016CLR\SQLSysClrTypes.msi"
-
-            $ReportViewer2012Redistributable = "\Prerequisites\RV2016\ReportViewer.msi"
+            
 
             Package "SQLServer2012SystemCLRTypes"
             {
                 Ensure = "Present"
                 Name = "Microsoft System CLR Types for SQL Server 2016 (x64)"
                 ProductId = ""
-                Path = (Join-Path -Path $PackagePath -ChildPath $SQLServer2012SystemCLRTypes)
+                Path = $SQLServer2012SystemCLRTypesPath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
             }
@@ -196,7 +201,7 @@
                 Ensure = "Present"
                 Name = "Microsoft Report Viewer 2012 Runtime"
                 ProductID = ""
-                Path = (Join-Path -Path $Node.SourcePath -ChildPath $ReportViewer2012Redistributable)
+                Path = $ReportViewer2012RedistributablePath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
             }
