@@ -1,4 +1,4 @@
-﻿Configuration Install-SQLBox
+﻿Configuration Install-ScomSQL
 {
     param (
         [Parameter(Mandatory=$true)]
@@ -47,6 +47,18 @@
 		[Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
         [String]$SQLInstanceDir,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$SQLDataPath,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$SQLLogPath,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
+        [String]$SQLTempPath,
 		
 		[Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
@@ -120,10 +132,46 @@
             Message = "Running SQLInstall. PackagePath = $PackagePath"
         }
 
+        File sqldatafolder
+         {
+            Type = 'Directory'
+            DestinationPath = $SQLDataPath
+            Ensure = "Present"
+         }
+
+           File sqllogfolder
+         {
+            Type = 'Directory'
+            DestinationPath = $SQLLogPath
+            Ensure = "Present"
+         }
+
+            File sqltempfolder
+         {
+            Type = 'Directory'
+            DestinationPath = $SQLTempPath
+            Ensure = "Present"
+         }
+
+         $DependsOn = @(
+                "[File]sqldatafolder",
+                "[File]sqllogfolder",
+                "[File]sqltempfolder",
+                "[WindowsFeature]Web-WebServer",
+                "[WindowsFeature]Web-Request-Monitor",
+                "[WindowsFeature]Web-Windows-Auth",
+                "[WindowsFeature]Web-Asp-Net",
+                "[WindowsFeature]NET-WCF-HTTP-Activation45",
+                "[WindowsFeature]Web-Mgmt-Console",
+                "[WindowsFeature]Web-Metabase",
+                "[WindowsFeature]Web-Asp-Net45"
+            )
+
 		
 		xSQLServerSetup SQLServerSetup
 
-		{           
+		{   
+            DependsOn = $DependsOn        
             SourcePath = $PackagePath
             SourceCredential = $FileShareCreds           
             PsDscRunAsCredential  = $AdminCreds
@@ -131,7 +179,10 @@
             AgtSvcAccount = $SQLAgentCreds
 			SAPWd = $SQLSAAccountCreds		
 			InstanceName =  $SQLInstanceName  
-			InstanceDir = $SQLInstanceDir  
+			InstanceDir = $SQLInstanceDir
+            SQLUserDBDir = $SQLDataPath
+            SQLUserDBLogDir = $SQLLogPath
+            SQLTempDBDir = $SQLTempPath
             SecurityMode =  $SecurityMode 
             SQLSysAdminAccounts =  @($SQLSysAdminAccounts)
 			UpdateSource = $UpdateSource 
