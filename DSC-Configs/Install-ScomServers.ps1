@@ -27,10 +27,10 @@
 		[string]$SystemCenter2016OperationsManagerDatabaseInstance,
 
         [Parameter(Mandatory)]
-		[string]$SystemCenter2016OperationsManagerDatawarehouseInstance,
-
+		[string]$SystemCenter2016OperationsManagerDatabaseName,
+        
         [Parameter(Mandatory)]
-		[string]$SystemCenter2016OperationsManagerReportingInstance,
+		[string]$SystemCenter2016OperationsManagerDatawarehouseDatabaseName,
 
         [Parameter(Mandatory)]
         [string]$MachineName,
@@ -173,10 +173,10 @@
                 DASAccount = $SystemCenter2016OperationsManagerDASAccount
                 DataReader = $SystemCenter2016OperationsManagerDataReader
                 DataWriter = $SystemCenter2016OperationsManagerDataWriter
-                SqlServerInstance = $SystemCenter2016OperationsManagerDatabaseServer
-                DatabaseName = $SystemCenter2016OperationsManagerDatabaseInstance
-                DwSqlServerInstance = $SystemCenter2016OperationsManagerDatabaseServer
-                DwDatabaseName = $SystemCenter2016OperationsManagerDatawarehouseInstance
+                SqlServerInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerDatabaseInstance)
+                DatabaseName = $SystemCenter2016OperationsManagerDatabaseName
+                DwSqlServerInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerDatabaseInstance)
+                DwDatabaseName = $SystemCenter2016OperationsManagerDatawarehouseDatabaseName
             }
 
 
@@ -214,7 +214,7 @@
                 SourcePath = $PackagePath
                 SetupCredential = $InstallerServiceAccount
                 ManagementServer = $MachineName
-                SRSInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerReportingInstance)
+                SRSInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerDatabaseInstance)
                 DataReader = $SystemCenter2016OperationsManagerDataReader
             }
 
