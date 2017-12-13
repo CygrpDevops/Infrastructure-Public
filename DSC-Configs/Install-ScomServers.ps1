@@ -3,16 +3,16 @@
  param(
         
         [Parameter(Mandatory)]
-		[System.Management.Automation.PSCredential]$SystemCenter2012OperationsManagerActionAccount,
+		[System.Management.Automation.PSCredential]$SystemCenter2016OperationsManagerActionAccount,
 
         [Parameter(Mandatory)]
-		[System.Management.Automation.PSCredential]$SystemCenter2012OperationsManagerDASAccount,
+		[System.Management.Automation.PSCredential]$SystemCenter2016OperationsManagerDASAccount,
 
          [Parameter(Mandatory)]
-		[System.Management.Automation.PSCredential]$SystemCenter2012OperationsManagerDataReader,
+		[System.Management.Automation.PSCredential]$SystemCenter2016OperationsManagerDataReader,
 
         [Parameter(Mandatory)]
-		[System.Management.Automation.PSCredential]$SystemCenter2012OperationsManagerDataWriter,
+		[System.Management.Automation.PSCredential]$SystemCenter2016OperationsManagerDataWriter,
 
         [Parameter(Mandatory)]
 		[System.Management.Automation.PSCredential]$InstallerServiceAccount,
@@ -42,10 +42,10 @@
         [string]$PackagePath,
 
         [Parameter(Mandatory)]
-        [string]$SQLServer2012SystemCLRTypesPath,
+        [string]$SQLServer2016SystemCLRTypesPath,
 
         [Parameter(Mandatory)]
-        [string]$ReportViewer2012RedistributablePath
+        [string]$ReportViewer2016RedistributablePath
  
        )
 
@@ -127,8 +127,8 @@
             {
                 GroupName = "Administrators"
                 MembersToInclude = @(
-                    $SystemCenter2012OperationsManagerActionAccount.UserName,
-                    $SystemCenter2012OperationsManagerDASAccount.UserName
+                    $SystemCenter2016OperationsManagerActionAccount.UserName,
+                    $SystemCenter2016OperationsManagerDASAccount.UserName
                 )
                 Credential = $InstallerServiceAccount
             
@@ -169,10 +169,10 @@
                 ProductKey = $SystemCenter2016ProductKey
                 ManagementGroupName = $ManagementGroupName
                 FirstManagementServer = $true
-                ActionAccount = $SystemCenter2012OperationsManagerActionAccount
-                DASAccount = $SystemCenter2012OperationsManagerDASAccount
-                DataReader = $SystemCenter2012OperationsManagerDataReader
-                DataWriter = $SystemCenter2012OperationsManagerDataWriter
+                ActionAccount = $SystemCenter2016OperationsManagerActionAccount
+                DASAccount = $SystemCenter2016OperationsManagerDASAccount
+                DataReader = $SystemCenter2016OperationsManagerDataReader
+                DataWriter = $SystemCenter2016OperationsManagerDataWriter
                 SqlServerInstance = $SystemCenter2016OperationsManagerDatabaseServer
                 DatabaseName = $SystemCenter2016OperationsManagerDatabaseInstance
                 DwSqlServerInstance = $SystemCenter2016OperationsManagerDatabaseServer
@@ -189,7 +189,7 @@
                 Ensure = "Present"
                 Name = "Microsoft System CLR Types for SQL Server 2016 (x64)"
                 ProductId = ""
-                Path = $SQLServer2012SystemCLRTypesPath
+                Path = $SQLServer2016SystemCLRTypesPath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
             }
@@ -201,7 +201,7 @@
                 Ensure = "Present"
                 Name = "Microsoft Report Viewer 2016 Runtime"
                 ProductID = ""
-                Path = $ReportViewer2012RedistributablePath
+                Path = $ReportViewer2016RedistributablePath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
             }
@@ -215,7 +215,7 @@
                 SetupCredential = $InstallerServiceAccount
                 ManagementServer = $MachineName
                 SRSInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerReportingInstance)
-                DataReader = $SystemCenter2012OperationsManagerDataReader
+                DataReader = $SystemCenter2016OperationsManagerDataReader
             }
 
 
@@ -230,8 +230,8 @@
                 "[WindowsFeature]NET-WCF-HTTP-Activation45",
                 "[WindowsFeature]Web-Mgmt-Console",
                 "[WindowsFeature]Web-Metabase",
-                "[Package]SQLServer2012SystemCLRTypes",
-                "[Package]ReportViewer2012Redistributable",
+                "[Package]SQLServer2016SystemCLRTypes",
+                "[Package]ReportViewer2016Redistributable",
                 "[xSCOMManagementServerSetup]OMMS"
             )
            
@@ -248,8 +248,8 @@
             xSCOMConsoleSetup "OMC"
             {
                 DependsOn = @(
-                    "[Package]SQLServer2012SystemCLRTypes",
-                    "[Package]ReportViewer2012Redistributable"
+                    "[Package]SQLServer2016SystemCLRTypes",
+                    "[Package]ReportViewer2016Redistributable"
                 )
                 Ensure = "Present"
                 SourcePath = $PackagePath
