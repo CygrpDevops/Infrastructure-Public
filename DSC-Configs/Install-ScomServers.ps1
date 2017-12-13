@@ -52,6 +52,19 @@
     Import-DscResource -Module xCredSSP
     Import-DscResource -Module xSQLServer
     Import-DscResource -Module xSCOM
+
+
+    $ActionAccountSecurePassword = ConvertTo-SecureString -String $SystemCenter2016OperationsManagerActionAccount.Password -AsPlainText -Force
+    $ManagerDASAccountSecurePassword = ConvertTo-SecureString -String $SystemCenter2016OperationsManagerDASAccount.Password -AsPlainText -Force
+    $DataReaderSecurePassword = ConvertTo-SecureString -String $SystemCenter2016OperationsManagerDataReader.Password -AsPlainText -Force
+    $DataWriterSecurePassword = ConvertTo-SecureString -String $SystemCenter2016OperationsManagerDataWriter.Password -AsPlainText -Force
+
+    $SystemCenter2016OperationsManagerActionAccount = New-Object System.Management.Automation.PSCredential ($SystemCenter2012OperationsManagerActionAccount.UserName, $ActionAccountSecurePassword)
+    $SystemCenter2016OperationsManagerDASAccount = New-Object System.Management.Automation.PSCredential ($SystemCenter2016OperationsManagerDASAccount.UserName, $ManagerDASAccountSecurePassword)
+    $SystemCenter2016OperationsManagerDataReader = New-Object System.Management.Automation.PSCredential ($SystemCenter2016OperationsManagerDataReader.UserName, $DataReaderSecurePassword)
+    $SystemCenter2016OperationsManagerDataWriter = New-Object System.Management.Automation.PSCredential ($SystemCenter2016OperationsManagerDataWriter.UserName, $DataWriterSecurePassword)
+
+
     # One can evaluate expressions to get the node list
     # E.g: $AllNodes.Where("Role -eq Web").NodeName
     node $MachineName
