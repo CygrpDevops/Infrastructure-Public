@@ -67,7 +67,7 @@
 
     # One can evaluate expressions to get the node list
     # E.g: $AllNodes.Where("Role -eq Web").NodeName
-    node $MachineName
+    node localhost
     {
         
          # Set LCM to reboot if needed   
