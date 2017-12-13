@@ -550,7 +550,7 @@ function Set-TargetResource
         }
     }
 
-    if (-not (Test-TargetResource -SourcePath $SourcePath -Features $Features -InstanceName $InstanceName -SourceCredential $SourceCredential))
+    if (-not (Test-TargetResource -SourcePath $SourcePath -Features $Features -InstanceName $InstanceName))
     {
         throw New-TerminatingError -ErrorType TestFailedAfterSet -ErrorCategory InvalidResult
     }
@@ -603,7 +603,7 @@ function Test-TargetResource
         $SourceCredential
     )
 
-    $getTargetResourceResult = Get-TargetResource -SourcePath $SourcePath -Features $Features -InstanceName $InstanceName -SourceCredential $SourceCredential
+    $getTargetResourceResult = Get-TargetResource -SourcePath $SourcePath -Features $Features -InstanceName $InstanceName
 
     return ($getTargetResourceResult.Ensure -eq $Ensure)
 }
