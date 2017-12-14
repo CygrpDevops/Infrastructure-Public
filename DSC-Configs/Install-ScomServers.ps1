@@ -188,8 +188,8 @@
             Package "SQLServer2016SystemCLRTypes"
             {
                 Ensure = "Present"
-                Name = "Microsoft System CLR Types for SQL Server 2016 (x64)"
-                ProductId = ""
+                Name = "Microsoft System CLR Types for SQL Server 2016"
+                ProductId = "6EB5054-C775-4BEF-B7B9-AA96A295EDCD"
                 Path = $SQLServer2016SystemCLRTypesPath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
@@ -200,8 +200,8 @@
             {
                 DependsOn = "[Package]SQLServer2016SystemCLRTypes"
                 Ensure = "Present"
-                Name = "Microsoft Report Viewer 2016 Runtime"
-                ProductID = ""
+                Name = "Microsoft Report Viewer for SQL Server 2016"
+                ProductID = "6ECB5D2E-AF2E-4E1B-A311-3CD800DF2A5F"
                 Path = $ReportViewer2016RedistributablePath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
