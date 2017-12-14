@@ -165,6 +165,7 @@
                 DependsOn = $DependsOn
                 Ensure = "Present"
                 SourcePath = $PackagePath
+                SourceFolder = ""
                 SetupCredential = $InstallerServiceAccount
                 ProductKey = $SystemCenter2016ProductKey
                 ManagementGroupName = $ManagementGroupName
