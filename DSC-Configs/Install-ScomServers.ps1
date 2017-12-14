@@ -58,7 +58,7 @@
     node localhost
     {
         
-         # Set LCM to reboot if needed   
+         # Set LCM to reboot if needed and debug mode  
            LocalConfigurationManager
             {
             DebugMode = $true
