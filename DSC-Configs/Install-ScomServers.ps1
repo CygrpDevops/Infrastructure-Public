@@ -61,7 +61,6 @@
          # Set LCM to reboot if needed and debug mode  
            LocalConfigurationManager
             {
-            DebugMode = $true
             RebootNodeIfNeeded = $true
             }
 
