@@ -213,6 +213,7 @@
                 DependsOn = "[xSCOMManagementServerSetup]OMMS"
                 Ensure = "Present"
                 SourcePath = $PackagePath
+                SourceFolder = ""
                 SetupCredential = $InstallerServiceAccount
                 ManagementServer = $MachineName
                 SRSInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerDatabaseInstance)
@@ -241,6 +242,7 @@
                 DependsOn = $DependsOn
                 Ensure = "Present"
                 SourcePath = $PackagePath
+                SourceFolder = ""
                 SetupCredential = $InstallerServiceAccount
                 ManagementServer = $MachineName
             }
@@ -254,6 +256,7 @@
                 )
                 Ensure = "Present"
                 SourcePath = $PackagePath
+                SourceFolder = ""
                 SetupCredential = $InstallerServiceAccount
             }
 
