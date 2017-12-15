@@ -189,7 +189,7 @@
             {
                 Ensure = "Present"
                 Name = "Microsoft System CLR Types for SQL Server 2016"
-                ProductId = "6EB5054-C775-4BEF-B7B9-AA96A295EDCD"
+                ProductId = "96EB5054-C775-4BEF-B7B9-AA96A295EDCD"
                 Path = $SQLServer2016SystemCLRTypesPath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
