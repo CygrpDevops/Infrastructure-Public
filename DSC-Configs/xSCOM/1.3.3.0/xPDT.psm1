@@ -557,8 +557,9 @@ function StartWin32Process
         [Switch]
         $AsTask
     )
-
+    Write-Verbose "in the StartWin32Process"
     $GetArguments = ExtractArguments $PSBoundParameters ("Path","Arguments","Credential")
+    Write-Verbose "arguments $GetArguments"
     $Processes = @(GetWin32Process @getArguments)
     if ($processes.Count -eq 0)
     {
@@ -603,10 +604,13 @@ function StartWin32Process
             {
                 $null = $StartArguments.Remove("ArgumentList")
             }
+            Write-Verbose $StartArguments
+
             $err = Start-Process @StartArguments
         }
         if($err -ne $null)
-        {
+        {   
+            Write-Verbose "Error is about to happen."
             throw $err
         }
         if (!(WaitForWin32ProcessStart @GetArguments))
