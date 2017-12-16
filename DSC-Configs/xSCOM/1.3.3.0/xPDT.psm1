@@ -615,7 +615,7 @@ function StartWin32Process
         }
         if (!(WaitForWin32ProcessStart @GetArguments))
         {
-            ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
+          #  ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
         }
     }
     else
