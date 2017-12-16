@@ -613,10 +613,24 @@ function StartWin32Process
             Write-Verbose "Error is about to happen."
             throw $err
         }
-        if (!(WaitForWin32ProcessStart @GetArguments))
+
+        $started = $false
+
+        Do {
+
+         $status = Get-Process setup -ErrorAction SilentlyContinue
+  
+         If (!($status)) { Write-Host 'Waiting for process to start' ; Start-Sleep -Seconds 1 }
+    
+         Else { Write-Host 'Process has started' ; $started = $true }
+
+          }
+        Until ( $started )
+
+        #if (!(WaitForWin32ProcessStart @GetArguments))
         {
           #  ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
-        }
+        #}
     }
     else
     {
