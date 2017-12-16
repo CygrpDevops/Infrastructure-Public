@@ -628,7 +628,7 @@ function StartWin32Process
         Until ( $started )
 
         #if (!(WaitForWin32ProcessStart @GetArguments))
-        {
+       # {
           #  ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
         #}
     }
