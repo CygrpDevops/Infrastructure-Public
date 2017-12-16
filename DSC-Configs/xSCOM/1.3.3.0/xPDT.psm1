@@ -713,6 +713,10 @@ function WaitForWin32ProcessEnd
            Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)} | Where-Object {$_ -ne $null} | Unregister-ScheduledTask -Confirm:$false
            $completed = $true
           }
+          else{
+          Start-ScheduledTask -TaskName $taskrunning.TaskName
+          $completed = $false
+          }
    
         }
         else
