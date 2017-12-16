@@ -210,7 +210,7 @@
             
 
             
-
+<#
              # Install Reporting Server
             xSCOMReportingServerSetup "OMRS"
             {
@@ -223,7 +223,7 @@
                 SRSInstance = ($SystemCenter2016OperationsManagerDatabaseServer + "\" + $SystemCenter2016OperationsManagerDatabaseInstance)
                 DataReader = $SystemCenter2016OperationsManagerDataReader
             }
-
+#>
 
             # Install Web Console Servers
             $DependsOn += @(
@@ -238,8 +238,8 @@
                 "[WindowsFeature]Web-Metabase",
                 "[Package]SQLServer2016SystemCLRTypes",
                 "[Package]ReportViewer2016Redistributable",
-                "[xSCOMManagementServerSetup]OMMS",
-                "[xSCOMReportingServerSetup]OMRS"
+                "[xSCOMManagementServerSetup]OMMS"
+               # "[xSCOMReportingServerSetup]OMRS"
             )
            
             xSCOMWebConsoleServerSetup "OMWC"
