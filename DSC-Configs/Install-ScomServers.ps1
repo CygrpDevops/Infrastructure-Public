@@ -150,11 +150,35 @@
                 DelegateComputers = $MachineName
             }
 
+            Package "SQLServer2016SystemCLRTypes"
+            {
+                Ensure = "Present"
+                Name = "Microsoft System CLR Types for SQL Server 2016"
+                ProductId = "96EB5054-C775-4BEF-B7B9-AA96A295EDCD"
+                Path = $SQLServer2016SystemCLRTypesPath
+                Arguments = "ALLUSERS=2"
+                Credential = $InstallerServiceAccount
+            }
+
+
+            Package "ReportViewer2016Redistributable"
+            {
+                DependsOn = "[Package]SQLServer2016SystemCLRTypes"
+                Ensure = "Present"
+                Name = "Microsoft Report Viewer for SQL Server 2016"
+                ProductID = "6ECB5D2E-AF2E-4E1B-A311-3CD800DF2A5F"
+                Path = $ReportViewer2016RedistributablePath
+                Arguments = "ALLUSERS=2"
+                Credential = $InstallerServiceAccount
+            }
+
             # Create DependsOn for first Management Server
             $DependsOn = @(
                 "[xCredSSP]Server",
                 "[xCredSSP]Client",
-                "[Group]Administrators"
+                "[Group]Administrators",
+                "[Package]SQLServer2016SystemCLRTypes",
+                "[Package]SQLServer2016SystemCLRTypes"
             )
 
           
@@ -185,27 +209,7 @@
 
             
 
-            Package "SQLServer2016SystemCLRTypes"
-            {
-                Ensure = "Present"
-                Name = "Microsoft System CLR Types for SQL Server 2016"
-                ProductId = "96EB5054-C775-4BEF-B7B9-AA96A295EDCD"
-                Path = $SQLServer2016SystemCLRTypesPath
-                Arguments = "ALLUSERS=2"
-                Credential = $InstallerServiceAccount
-            }
-
-
-            Package "ReportViewer2016Redistributable"
-            {
-                DependsOn = "[Package]SQLServer2016SystemCLRTypes"
-                Ensure = "Present"
-                Name = "Microsoft Report Viewer for SQL Server 2016"
-                ProductID = "6ECB5D2E-AF2E-4E1B-A311-3CD800DF2A5F"
-                Path = $ReportViewer2016RedistributablePath
-                Arguments = "ALLUSERS=2"
-                Credential = $InstallerServiceAccount
-            }
+            
 
              # Install Reporting Server
             xSCOMReportingServerSetup "OMRS"
@@ -234,7 +238,8 @@
                 "[WindowsFeature]Web-Metabase",
                 "[Package]SQLServer2016SystemCLRTypes",
                 "[Package]ReportViewer2016Redistributable",
-                "[xSCOMManagementServerSetup]OMMS"
+                "[xSCOMManagementServerSetup]OMMS",
+                "[xSCOMReportingServerSetup]OMRS"
             )
            
             xSCOMWebConsoleServerSetup "OMWC"
@@ -252,7 +257,8 @@
             {
                 DependsOn = @(
                     "[Package]SQLServer2016SystemCLRTypes",
-                    "[Package]ReportViewer2016Redistributable"
+                    "[Package]ReportViewer2016Redistributable",
+                    "[xSCOMWebConsoleServerSetup]OMWC"
                 )
                 Ensure = "Present"
                 SourcePath = $PackagePath
