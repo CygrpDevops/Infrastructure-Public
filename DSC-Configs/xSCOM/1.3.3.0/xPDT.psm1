@@ -620,7 +620,7 @@ function StartWin32Process
 
          $status = Get-Process setup -ErrorAction SilentlyContinue
   
-         If (!($status)) { Write-Host 'Waiting for process to start' ; Start-Sleep -Seconds 1 }
+         If (!($status)) { Write-Host 'Waiting for process to start' ; Start-Sleep -Seconds 5 }
     
          Else { Write-Host 'Process has started' ; $started = $true }
 
@@ -636,7 +636,8 @@ function StartWin32Process
     {
         return ($LocalizedData.ProcessAlreadyStarted -f $Path,$Processes.ProcessId)
     }
-    $Processes = @(GetWin32Process @getArguments)
+    $Processes = Get-Process setup -ErrorAction SilentlyContinue
+
     return ($LocalizedData.ProcessStarted -f $Path,$Processes.ProcessId)
 }
 
@@ -685,11 +686,45 @@ function WaitForWin32ProcessEnd
     )
 
     $GetArguments = ExtractArguments $PSBoundParameters ("Path","Arguments","Credential")
-    While (WaitForWin32ProcessStart @GetArguments)
-    {
-        Start-Sleep 1
+
+    $setuprunning = Get-Process -Name setup -ErrorAction SilentlyContinue
+
+    #While (WaitForWin32ProcessStart @GetArguments)
+   # {
+      #  Start-Sleep 1
+   # }
+   $taskrunning = Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)}
+
+   $tasklastresult = $taskrunning|Get-ScheduledTaskInfo
+
+   $completed = $false
+
+   do
+   {
+       if(!($setuprunning))
+       {
+   
+         if($taskrunning.State -eq "Running")
+           {
+           Start-Sleep 1
+           }
+          if(($taskrunning.State -eq "Ready") -and ($tasklastresult -eq 0))
+          {
+           Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)} | Where-Object {$_ -ne $null} | Unregister-ScheduledTask -Confirm:$false
+           $completed = $true
+          }
+   
+        }
+        else
+        {
+         $completed =$false
+        }
     }
-    Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)} | Where-Object {$_ -ne $null} | Unregister-ScheduledTask -Confirm:$false
+   until ($completed)
+   
+
+
+   
 }
 
 function NetUse
