@@ -178,7 +178,7 @@
                 "[xCredSSP]Client",
                 "[Group]Administrators",
                 "[Package]SQLServer2016SystemCLRTypes",
-                "[Package]SQLServer2016SystemCLRTypes"
+                "[Package]ReportViewer2016Redistributable"
             )
 
           
