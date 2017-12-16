@@ -1,0 +1,1 @@
+﻿New-PSDrive -Name "Z" -PSProvider "FileSystem" -Root "\\srv-add-data\ITGroup\Tools\SystemCenter\SCOM2016"
