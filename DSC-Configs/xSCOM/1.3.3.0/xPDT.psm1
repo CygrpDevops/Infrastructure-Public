@@ -584,9 +584,9 @@ function StartWin32Process
                 try
                 {
                     CallPInvoke
-                    #[Source.NativeMethods]::CreateProcessAsUser(("$Path " + $Arguments),$Credential.GetNetworkCredential().Domain,$Credential.GetNetworkCredential().UserName,$Credential.GetNetworkCredential().Password)
-                   $myprocess =  Start-Process -FilePath $Path -ArgumentList $Arguments -Credential $Credential -Wait -PassThru -ErrorAction Stop -Verb runAs
-                   Wait-Process -InputObject $myprocess -Timeout 7200 -ErrorAction Stop
+                    [Source.NativeMethods]::CreateProcessAsUser(("$Path " + $Arguments),$Credential.GetNetworkCredential().Domain,$Credential.GetNetworkCredential().UserName,$Credential.GetNetworkCredential().Password)
+                   #$myprocess =  Start-Process -FilePath $Path -ArgumentList $Arguments -Credential $Credential -Wait -PassThru -ErrorAction Stop -Verb runAs
+                   #Wait-Process -InputObject $myprocess -Timeout 7200 -ErrorAction Stop
                     
 
                 }
@@ -644,7 +644,7 @@ function StartWin32Process
     }
     #$Processes = Get-Process setup -ErrorAction SilentlyContinue
 
-    return ($LocalizedData.ProcessStarted -f $Path,$myprocess.Id)
+    return ($LocalizedData.ProcessStarted -f $Path,$Processes.Id)
 }
 
 function WaitForWin32ProcessStart
