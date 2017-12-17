@@ -693,7 +693,7 @@ function WaitForWin32ProcessEnd
    # {
       #  Start-Sleep 1
    # }
-   $taskrunning = Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)}
+   $taskrunning = Get-ScheduledTask -TaskName "xPDT*"
 
    $tasklastresult = $taskrunning|Get-ScheduledTaskInfo
 
@@ -709,7 +709,8 @@ function WaitForWin32ProcessEnd
            }
           elseif(($taskrunning.State -eq "Ready") -and ($tasklastresult.LastTaskResult -eq 0))
           {
-           Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)} | Where-Object {$_ -ne $null} | Unregister-ScheduledTask -Confirm:$false
+           #Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)} | Where-Object {$_ -ne $null} | Unregister-ScheduledTask -Confirm:$false
+           Get-ScheduledTask -TaskName "xPDT*"|Unregister-ScheduledTask -Confirm:$false
            $completed = $true
           }
         
