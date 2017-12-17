@@ -584,7 +584,11 @@ function StartWin32Process
                 try
                 {
                     CallPInvoke
-                    [Source.NativeMethods]::CreateProcessAsUser(("$Path " + $Arguments),$Credential.GetNetworkCredential().Domain,$Credential.GetNetworkCredential().UserName,$Credential.GetNetworkCredential().Password)
+                    #[Source.NativeMethods]::CreateProcessAsUser(("$Path " + $Arguments),$Credential.GetNetworkCredential().Domain,$Credential.GetNetworkCredential().UserName,$Credential.GetNetworkCredential().Password)
+                   $myprocess =  Start-Process -FilePath $Path -ArgumentList $Arguments -Credential $Credential -Wait -PassThru -ErrorAction Stop -Verb runAs
+                   Wait-Process -InputObject $myprocess -Timeout 7200 -ErrorAction Stop
+                    
+
                 }
                 catch
                 {
@@ -614,7 +618,7 @@ function StartWin32Process
             throw $err
         }
 
-        $started = $false
+        <#$started = $false
 
         Do {
 
@@ -626,19 +630,21 @@ function StartWin32Process
 
           }
         Until ( $started )
+        #>
 
-        #if (!(WaitForWin32ProcessStart @GetArguments))
-       # {
+
+        if (!(WaitForWin32ProcessStart @GetArguments))
+        {
           #  ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
-        #}
+        }
     }
     else
     {
         return ($LocalizedData.ProcessAlreadyStarted -f $Path,$Processes.ProcessId)
     }
-    $Processes = Get-Process setup -ErrorAction SilentlyContinue
+    #$Processes = Get-Process setup -ErrorAction SilentlyContinue
 
-    return ($LocalizedData.ProcessStarted -f $Path,$Processes.ProcessId)
+    return ($LocalizedData.ProcessStarted -f $Path,$myprocess.Id)
 }
 
 function WaitForWin32ProcessStart
@@ -689,10 +695,14 @@ function WaitForWin32ProcessEnd
 
    # $setuprunning = Get-Process -Name setup -ErrorAction SilentlyContinue
 
-    #While (WaitForWin32ProcessStart @GetArguments)
-   # {
-      #  Start-Sleep 1
-   # }
+    While (WaitForWin32ProcessStart @GetArguments)
+    {
+        Start-Sleep 1
+    }
+
+   Get-ScheduledTask | Where-Object {($_.TaskName.Length -ge 4) -and ($_.TaskName.Substring(0,4) -eq "xPDT") -and ($_.Actions.Execute -eq $Path) -and ($_.Actions.Arguments -eq $Arguments)} | Where-Object {$_ -ne $null} | Unregister-ScheduledTask -Confirm:$false
+
+   <#
    $taskrunning = Get-ScheduledTask -TaskName "xPDT*"
 
    $tasklastresult = $taskrunning|Get-ScheduledTaskInfo
@@ -716,7 +726,7 @@ function WaitForWin32ProcessEnd
         
     }
    until ($completed)
-   
+  #> 
 
 
    
