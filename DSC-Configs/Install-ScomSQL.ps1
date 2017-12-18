@@ -168,7 +168,7 @@
             )
 
 		
-		xSQLServerSetup SQLServerSetup
+		xSQLServerSetup SCCMSQLServerSetup
 
 		{   
             DependsOn = $DependsOn        
@@ -178,7 +178,59 @@
 			SQLSvcAccount = $SQLServiceCreds
             AgtSvcAccount = $SQLAgentCreds
 			SAPWd = $SQLSAAccountCreds		
-			InstanceName =  $SQLInstanceName  
+			InstanceName =  "SCCM"  
+			InstanceDir = $SQLInstanceDir
+            SQLUserDBDir = $SQLDataPath
+            SQLUserDBLogDir = $SQLLogPath
+            SQLTempDBDir = $SQLTempPath
+            SecurityMode =  $SecurityMode 
+            SQLSysAdminAccounts =  @($SQLSysAdminAccounts)
+			UpdateSource = $UpdateSource 
+     		InstallSharedDir = $InstallSharedDir
+            InstallSharedWOWDir = $InstallSharedWOWDir
+			Features = $Features 
+			UpdateEnabled =  $UpdateEnabled 
+        }
+
+        $DependsOn += "[xSQLServerSetup]SCCMSQLServerSetup"
+
+        xSQLServerSetup SCOMSQLServerSetup
+
+		{   
+            DependsOn = $DependsOn        
+            SourcePath = $PackagePath
+            SourceCredential = $FileShareCreds           
+            PsDscRunAsCredential  = $AdminCreds
+			SQLSvcAccount = $SQLServiceCreds
+            AgtSvcAccount = $SQLAgentCreds
+			SAPWd = $SQLSAAccountCreds		
+			InstanceName =  "SCOM"  
+			InstanceDir = $SQLInstanceDir
+            SQLUserDBDir = $SQLDataPath
+            SQLUserDBLogDir = $SQLLogPath
+            SQLTempDBDir = $SQLTempPath
+            SecurityMode =  $SecurityMode 
+            SQLSysAdminAccounts =  @($SQLSysAdminAccounts)
+			UpdateSource = $UpdateSource 
+     		InstallSharedDir = $InstallSharedDir
+            InstallSharedWOWDir = $InstallSharedWOWDir
+			Features = $Features 
+			UpdateEnabled =  $UpdateEnabled 
+        }
+
+        $DependsOn += "[xSQLServerSetup]SCOMSQLServerSetup"
+
+         xSQLServerSetup SCOMReportingSQLServerSetup
+
+		{   
+            DependsOn = $DependsOn        
+            SourcePath = $PackagePath
+            SourceCredential = $FileShareCreds           
+            PsDscRunAsCredential  = $AdminCreds
+			SQLSvcAccount = $SQLServiceCreds
+            AgtSvcAccount = $SQLAgentCreds
+			SAPWd = $SQLSAAccountCreds		
+			InstanceName =  "SCOMReporting"  
 			InstanceDir = $SQLInstanceDir
             SQLUserDBDir = $SQLDataPath
             SQLUserDBLogDir = $SQLLogPath
