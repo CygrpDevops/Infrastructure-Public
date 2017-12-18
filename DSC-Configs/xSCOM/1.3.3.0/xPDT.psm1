@@ -635,7 +635,7 @@ function StartWin32Process
 
         if (!(WaitForWin32ProcessStart @GetArguments))
         {
-          #  ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
+           ThrowInvalidArgumentError "FailureWaitingForProcessesToStart" ($LocalizedData.ErrorStarting -f $Path,$LocalizedData.FailureWaitingForProcessesToStart)
         }
     }
     else
@@ -644,6 +644,7 @@ function StartWin32Process
     }
     #$Processes = Get-Process setup -ErrorAction SilentlyContinue
 
+    $Processes = @(GetWin32Process @getArguments)
     return ($LocalizedData.ProcessStarted -f $Path,$Processes.Id)
 }
 
