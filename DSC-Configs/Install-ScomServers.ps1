@@ -150,23 +150,23 @@
                 DelegateComputers = $MachineName
             }
 
-            Package "SQLServer2016SystemCLRTypes"
+            Package "SQLServer2014SystemCLRTypes"
             {
                 Ensure = "Present"
-                Name = "Microsoft System CLR Types for SQL Server 2016"
-                ProductId = "96EB5054-C775-4BEF-B7B9-AA96A295EDCD"
+                Name = "Microsoft System CLR Types for SQL Server 2014"
+                ProductId = "68BA34E8-9B9D-4A74-83F0-7D366B532D75"
                 Path = $SQLServer2016SystemCLRTypesPath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
             }
 
 
-            Package "ReportViewer2016Redistributable"
+            Package "ReportViewer2015Redistributable"
             {
-                DependsOn = "[Package]SQLServer2016SystemCLRTypes"
+                DependsOn = "[Package]SQLServer2014SystemCLRTypes"
                 Ensure = "Present"
-                Name = "Microsoft Report Viewer for SQL Server 2016"
-                ProductID = "6ECB5D2E-AF2E-4E1B-A311-3CD800DF2A5F"
+                Name = "Microsoft Report Viewer 2015 Runtime"
+                ProductID = "3ECE8FC7-7020-4756-A71C-C345D4725B77"
                 Path = $ReportViewer2016RedistributablePath
                 Arguments = "ALLUSERS=2"
                 Credential = $InstallerServiceAccount
@@ -177,8 +177,8 @@
                 "[xCredSSP]Server",
                 "[xCredSSP]Client",
                 "[Group]Administrators",
-                "[Package]SQLServer2016SystemCLRTypes",
-                "[Package]ReportViewer2016Redistributable"
+                "[Package]SQLServer2014SystemCLRTypes",
+                "[Package]ReportViewer2015Redistributable"
             )
 
           
@@ -236,8 +236,8 @@
                 "[WindowsFeature]NET-WCF-HTTP-Activation45",
                 "[WindowsFeature]Web-Mgmt-Console",
                 "[WindowsFeature]Web-Metabase",
-                "[Package]SQLServer2016SystemCLRTypes",
-                "[Package]ReportViewer2016Redistributable",
+                "[Package]SQLServer2014SystemCLRTypes",
+                "[Package]ReportViewer2015Redistributable",
                 "[xSCOMManagementServerSetup]OMMS"
                # "[xSCOMReportingServerSetup]OMRS"
             )
@@ -256,8 +256,8 @@
             xSCOMConsoleSetup "OMC"
             {
                 DependsOn = @(
-                    "[Package]SQLServer2016SystemCLRTypes",
-                    "[Package]ReportViewer2016Redistributable",
+                    "[Package]SQLServer2014SystemCLRTypes",
+                    "[Package]ReportViewer2015Redistributable",
                     "[xSCOMWebConsoleServerSetup]OMWC"
                 )
                 Ensure = "Present"
