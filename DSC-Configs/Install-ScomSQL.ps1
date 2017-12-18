@@ -257,7 +257,7 @@
        #>
 		LocalConfigurationManager 
         {
-            DebugMode = $true
+            #DebugMode = $true
             RebootNodeIfNeeded = $True
         }
 
