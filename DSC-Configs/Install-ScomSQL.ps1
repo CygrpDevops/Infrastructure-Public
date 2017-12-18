@@ -168,7 +168,7 @@
             )
 
 		
-		xSQLServerSetup SCCMSQLServerSetup
+		xSQLServerSetup SCOMSQLServerSetup
 
 		{   
             DependsOn = $DependsOn        
@@ -178,7 +178,7 @@
 			SQLSvcAccount = $SQLServiceCreds
             AgtSvcAccount = $SQLAgentCreds
 			SAPWd = $SQLSAAccountCreds		
-			InstanceName =  "SCCM"  
+			InstanceName =  $SQLInstanceName
 			InstanceDir = $SQLInstanceDir
             SQLUserDBDir = $SQLDataPath
             SQLUserDBLogDir = $SQLLogPath
@@ -191,7 +191,7 @@
 			Features = $Features 
 			UpdateEnabled =  $UpdateEnabled 
         }
-
+<#
         $DependsOn += "[xSQLServerSetup]SCCMSQLServerSetup"
 
         xSQLServerSetup SCOMSQLServerSetup
@@ -244,7 +244,7 @@
 			UpdateEnabled =  $UpdateEnabled 
         }
 
-        <#adding sql server feature firewall rules.
+        adding sql server feature firewall rules.
         xSqlServerFirewall SqlFirewallRules
         {
                         DependsOn = '[xSQLServerSetup]SQLServerSetup'
