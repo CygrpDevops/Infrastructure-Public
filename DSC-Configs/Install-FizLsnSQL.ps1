@@ -58,6 +58,10 @@
 
         [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
+        [String]$SQLBackupPath,
+
+        [Parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]
         [String]$SQLTempPath,
 		
 		[Parameter(Mandatory=$true)]
@@ -182,6 +186,7 @@
 			InstanceDir = $SQLInstanceDir
             SQLUserDBDir = $SQLDataPath
             SQLUserDBLogDir = $SQLLogPath
+            SQLBackupDir = $SQLBackupPath
             SQLTempDBDir = $SQLTempPath
             SecurityMode =  $SecurityMode 
             SQLSysAdminAccounts =  @($SQLSysAdminAccounts)
