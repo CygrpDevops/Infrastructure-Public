@@ -157,6 +157,13 @@
             Ensure = "Present"
          }
 
+         File sqlbackupfolder
+         {
+            Type = 'Directory'
+            DestinationPath = $SQLBackupPath
+            Ensure = "Present"
+         }
+
          $DependsOn = @(
                 "[File]sqldatafolder",
                 "[File]sqllogfolder",
@@ -172,7 +179,7 @@
             )
 
 		
-		xSQLServerSetup FizLsnSQLServerSetup
+		xSQLServerSetup NAvDevSQLServerSetup
 
 		{   
             DependsOn = $DependsOn        
